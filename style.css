@@ -1,102 +1,126 @@
 
 :root {
-  --bg: #0c120f;
-  --gold: #d8b875;
-  --light: #f0d9a4;
-  --muted: #a2afa5;
+  --bg: #09120d;
+  --gold: #d9b875;
+  --light: #f5dfad;
+  --muted: #a5b3a8;
+  --green: #1d3024;
 }
 
 * {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  background: radial-gradient(ellipse at top, #1c2b20, #0c120f 65%);
-  color: #f4f0e6;
-  font-family: Tahoma, Arial, sans-serif;
-  min-height: 100vh;
+html {
+  scroll-behavior: smooth;
 }
 
-.topbar, footer {
-  max-width: 1000px;
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: #f5f1e8;
+  font-family: Tahoma, Arial, sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 0%, #263c2b 0%, transparent 55%),
+    linear-gradient(145deg, #0d1911, #080e0a 75%);
+}
+
+button, select {
+  font-family: inherit;
+}
+
+.topbar,
+footer {
+  max-width: 1050px;
   margin: auto;
-  padding: 22px;
+  padding: 23px;
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
   flex-wrap: wrap;
-  border-bottom: 1px solid #ffffff12;
+}
+
+.topbar {
+  border-bottom: 1px solid #d9b87525;
 }
 
 .brand {
   color: var(--light);
-  font-size: 20px;
+  font-size: 23px;
   font-weight: bold;
   text-decoration: none;
+  letter-spacing: 1px;
 }
 
 .topbar span {
   color: var(--gold);
+  font-size: 13px;
 }
 
 .page {
-  width: min(92%, 600px);
+  width: min(92%, 620px);
   margin: auto;
 }
 
 .intro {
   text-align: center;
-  padding: 38px 0 20px;
+  padding: 55px 0 28px;
 }
 
 .intro small {
   color: var(--gold);
+  letter-spacing: 1px;
 }
 
 h1 {
-  font-size: clamp(32px, 7vw, 48px);
-  line-height: 1.4;
-  margin: 10px;
+  font-size: clamp(34px, 7vw, 49px);
+  line-height: 1.5;
+  margin: 15px 0;
 }
 
 h1 em {
-  font-style: normal;
   color: var(--light);
+  font-style: normal;
+  text-shadow: 0 0 30px #d9b87530;
 }
 
 .intro p {
   color: var(--muted);
   font-size: 14px;
+  line-height: 2;
 }
 
-/* صندوق الرسالة المطور */
+/* صندوق الرسالة الفخم */
+
 .message {
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top right, #d8b87525, transparent 55%),
-    linear-gradient(145deg, #24372a, #111a15 75%);
-  border: 1px solid #d8b87580;
-  border-radius: 24px;
-  padding: 25px 23px;
   margin: 22px 0;
+  padding: 27px 25px;
+  border: 1px solid #d9b87575;
+  border-radius: 23px;
+  background:
+    radial-gradient(circle at top left, #d9b87520, transparent 45%),
+    linear-gradient(145deg, #213528, #101a13);
   box-shadow:
-    0 15px 40px #0007,
-    inset 0 0 25px #d8b8750a;
+    0 15px 40px #0006,
+    inset 0 1px #ffffff0a;
 }
 
 .message::before {
   content: "";
   position: absolute;
-  top: 0;
   right: 0;
-  width: 5px;
-  height: 100%;
+  top: 20px;
+  bottom: 20px;
+  width: 4px;
+  border-radius: 10px;
   background: linear-gradient(
     to bottom,
-    #f0d9a4,
-    #b38e4f,
+    transparent,
+    var(--light),
+    var(--gold),
     transparent
   );
 }
@@ -104,25 +128,25 @@ h1 em {
 .message::after {
   content: "✦";
   position: absolute;
-  left: 18px;
+  left: 20px;
   top: 12px;
-  color: #d8b87555;
-  font-size: 35px;
+  font-size: 32px;
+  color: #d9b87540;
 }
 
 .message b {
   display: block;
   color: var(--light);
   font-size: 16px;
-  margin-bottom: 17px;
-  padding-bottom: 13px;
-  border-bottom: 1px solid #d8b87530;
+  padding-bottom: 15px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #d9b87530;
 }
 
 .message p {
-  color: #f8f3e8;
+  color: #f7f2e8;
   font-size: 15px;
-  line-height: 2.1;
+  line-height: 2.2;
   margin: 0 0 17px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -130,26 +154,31 @@ h1 em {
 
 .message small {
   display: inline-block;
-  color: var(--light);
-  background: #d8b87516;
-  border: 1px solid #d8b87550;
+  padding: 7px 14px;
   border-radius: 30px;
-  padding: 7px 13px;
+  border: 1px solid #d9b87555;
+  background: #d9b87512;
+  color: var(--light);
   font-size: 11px;
 }
 
+/* بطاقة السبحة */
+
 .card {
-  background: linear-gradient(145deg, #1d2b22, #111a15);
-  border: 1px solid #d8b87544;
-  border-radius: 22px;
-  padding: 22px;
-  margin: 16px 0;
-  box-shadow: 0 18px 45px #0005;
+  position: relative;
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 25px;
+  border: 1px solid #d9b87545;
+  background: linear-gradient(145deg, #1c2c20, #101811);
+  box-shadow: 0 20px 55px #0006;
 }
 
 .current {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 10px;
   color: var(--muted);
   font-size: 13px;
 }
@@ -160,38 +189,49 @@ h1 em {
 }
 
 .ring {
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
+  width: 225px;
+  height: 225px;
   padding: 9px;
-  margin: 24px auto;
-  background: conic-gradient(var(--gold), #435342, var(--gold));
+  margin: 30px auto;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #f2d99e,
+    #98723a,
+    #344b37,
+    #d9b875,
+    #f2d99e
+  );
+  box-shadow: 0 0 35px #d9b87520;
 }
 
 .ring > div {
+  width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: #101812;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid #d8b87555;
+  background: radial-gradient(circle, #1c2b20, #0b130d);
+  border: 1px solid #d9b87555;
 }
 
 .ring small {
   color: var(--muted);
+  font-size: 12px;
 }
 
 output {
-  font-size: 68px;
   color: var(--light);
+  font-size: 70px;
   font-weight: bold;
+  text-shadow: 0 0 25px #d9b87530;
 }
 
 .progress {
   max-width: 350px;
-  margin: 0 auto 20px;
+  margin: 0 auto 22px;
   color: var(--muted);
   font-size: 12px;
 }
@@ -199,13 +239,13 @@ output {
 .progress span {
   display: block;
   text-align: left;
-  margin-bottom: 8px;
+  margin-bottom: 9px;
 }
 
 .progress div {
-  height: 5px;
-  background: #ffffff18;
-  border-radius: 9px;
+  height: 6px;
+  background: #ffffff15;
+  border-radius: 20px;
   overflow: hidden;
 }
 
@@ -213,37 +253,52 @@ output {
   display: block;
   width: 0;
   height: 100%;
-  background: var(--gold);
-  transition: width .2s;
+  background: linear-gradient(90deg, #a47e43, #f0d9a4);
+  border-radius: 20px;
+  transition: width .3s;
 }
+
+/* زر التسبيح */
 
 .mainbtn {
   width: 100%;
-  padding: 20px;
-  border: 0;
-  border-radius: 15px;
-  background: linear-gradient(100deg, #b38e4f, #f0d9a4, #b38e4f);
-  font-size: 22px;
-  font-weight: bold;
+  padding: 21px;
+  border: 1px solid #f5dfad;
+  border-radius: 16px;
+  background: linear-gradient(110deg, #9b783e, #f0d9a4, #b18c50);
   color: #172018;
+  font-size: 23px;
+  font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 8px 25px #d9b87520;
+  transition: .2s;
+}
+
+.mainbtn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.mainbtn:active {
+  transform: scale(.98);
 }
 
 .controls {
   display: flex;
   justify-content: space-between;
-  margin-top: 18px;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .controls button,
 .controls label {
-  padding: 10px;
+  padding: 11px 13px;
   border: 1px solid #ffffff25;
-  border-radius: 10px;
-  background: #ffffff0a;
+  border-radius: 12px;
+  background: #ffffff08;
   color: var(--muted);
-  font: inherit;
+  font-size: 13px;
 }
 
 .controls button {
@@ -251,62 +306,86 @@ output {
 }
 
 .controls select {
-  background: #17231b;
   color: var(--light);
+  background: #17251b;
   border: 0;
+  outline: none;
+  padding: 5px;
 }
 
+/* الأذكار */
+
 .dhikr {
-  padding: 20px 0;
+  padding: 24px 0;
 }
 
 .dhikr h3 {
-  color: var(--gold);
-  font-size: 14px;
+  color: var(--light);
+  font-size: 17px;
+  margin-bottom: 18px;
 }
 
 .dhikr > div {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 
 .dhikr button {
-  padding: 14px 7px;
-  border-radius: 12px;
-  border: 1px solid #ffffff22;
-  background: #141e18;
-  color: #eee;
-  font: inherit;
+  padding: 17px 8px;
+  border-radius: 14px;
+  border: 1px solid #ffffff20;
+  background: linear-gradient(145deg, #19281d, #101812);
+  color: #eee9dc;
+  font-size: 14px;
   cursor: pointer;
+  transition: .2s;
+}
+
+.dhikr button:hover {
+  border-color: var(--gold);
+  color: var(--light);
 }
 
 .dhikr button.active {
   border-color: var(--gold);
   color: var(--light);
+  background: #d9b87515;
+  box-shadow: inset 0 0 20px #d9b87508;
 }
 
 .dhikr .wide {
   grid-column: 1 / -1;
 }
 
+/* الصلاة على النبي */
+
 .salawat {
+  position: relative;
   text-align: center;
-  padding: 24px;
+  padding: 30px 18px;
+  margin: 25px 0;
+  border-block: 1px solid #d9b87540;
   color: var(--light);
-  border-block: 1px solid #d8b87533;
-  line-height: 2;
-  font-size: 19px;
+  line-height: 2.2;
+  font-size: 18px;
+  background: linear-gradient(90deg, transparent, #d9b87509, transparent);
 }
 
 .salawat b {
-  font-size: 24px;
+  display: block;
+  margin-top: 8px;
+  font-size: 25px;
+  color: #f3dba7;
 }
 
+/* أسفل الموقع */
+
 footer {
-  border: 0;
+  border-top: 1px solid #d9b87520;
   color: var(--muted);
   font-size: 12px;
+  margin-top: 25px;
 }
 
 footer b,
@@ -318,22 +397,30 @@ footer a {
   text-decoration: none;
 }
 
+/* التنبيهات */
+
 #toast {
   position: fixed;
-  bottom: 20px;
+  bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--light);
   color: #172018;
-  padding: 10px 18px;
+  padding: 12px 20px;
   border-radius: 30px;
+  font-size: 13px;
   opacity: 0;
-  transition: .2s;
+  pointer-events: none;
+  transition: .25s;
+  box-shadow: 0 8px 25px #0005;
+  z-index: 100;
 }
 
 #toast.show {
   opacity: 1;
 }
+
+/* لوحة المصمم */
 
 .admin {
   width: min(92%, 520px);
@@ -341,10 +428,11 @@ footer a {
 }
 
 .panel {
-  background: #17231b;
-  border: 1px solid #d8b87555;
-  border-radius: 18px;
-  padding: 24px;
+  background: linear-gradient(145deg, #1c2c20, #101811);
+  border: 1px solid #d9b87555;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 15px 40px #0005;
 }
 
 .panel h1 {
@@ -354,14 +442,14 @@ footer a {
 
 .panel p {
   color: var(--muted);
-  line-height: 1.8;
+  line-height: 1.9;
   font-size: 13px;
 }
 
 .field {
   display: grid;
   gap: 8px;
-  margin: 17px 0;
+  margin: 18px 0;
 }
 
 .field label {
@@ -371,8 +459,9 @@ footer a {
 
 .field input,
 .field textarea {
-  padding: 12px;
-  border-radius: 9px;
+  width: 100%;
+  padding: 13px;
+  border-radius: 10px;
   border: 1px solid #ffffff30;
   background: #0c120f;
   color: white;
@@ -381,13 +470,15 @@ footer a {
 
 .field textarea {
   min-height: 120px;
+  resize: vertical;
 }
 
 .adminbtn {
-  padding: 12px 18px;
+  padding: 13px 20px;
   border: 0;
-  border-radius: 9px;
-  background: var(--gold);
+  border-radius: 10px;
+  background: linear-gradient(110deg, #b38e4f, #f0d9a4);
+  color: #172018;
   font-weight: bold;
   cursor: pointer;
 }
@@ -413,21 +504,37 @@ footer a {
   text-decoration: none;
 }
 
+/* الهواتف */
+
 @media (max-width: 480px) {
+  .topbar {
+    padding: 18px;
+  }
+
   .ring {
     width: 205px;
     height: 205px;
   }
 
   .card {
-    padding: 18px;
-  }
-
-  .topbar {
-    padding: 18px;
+    padding: 19px;
   }
 
   .message {
-    padding: 22px 19px;
+    padding: 23px 20px;
+  }
+
+  .controls {
+    align-items: stretch;
+  }
+
+  .controls button,
+  .controls label {
+    font-size: 12px;
+  }
+
+  footer {
+    justify-content: center;
+    text-align: center;
   }
 }
