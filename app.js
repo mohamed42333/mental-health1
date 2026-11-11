@@ -118,70 +118,40 @@ render();
 // الرسالة العامة من Google Sheets
 // ===================================
 
-let messageScript = null;
-
-function loadMessage() {
+async function loadMessage() {
   const messageElement = $("publicMessage");
   const statusElement = $("messageStatus");
 
   if (!messageElement || !statusElement) return;
 
-  statusElement.textContent = "جاري تحديث الرسالة...";
+  const url =
+    "https://script.google.com/macros/s/AKfycby26_Ym9ckKP3UdpesCEpWdMkLZEYvKJjWn1PGQNWn5qc67RCvvHTFw4EtNLN17QHnEVg/exec";
 
-  // إزالة الطلب السابق
-  if (messageScript) {
-    messageScript.remove();
-  }
+  try {
+    const response = await fetch(url + "?t=" + Date.now());
 
-  // اسم دالة استقبال البيانات
-  window.handleSheetData = function(data) {
-    if (messageScript) {
-      messageScript.remove();
-      messageScript = null;
+    if (!response.ok) {
+      throw new Error("Connection error");
     }
 
-    if (
-      !data ||
-      data.status !== "ok" ||
-      !data.table ||
-      !data.table.rows ||
-      !data.table.rows.length
-    ) {
-      statusElement.textContent = "تعذر قراءة الرسالة";
-      return;
-    }
+    const data = await response.json();
 
-    const cell = data.table.rows[0].c?.[0];
-    const message = cell?.v ?? cell?.f ?? "";
-
-    if (!String(message).trim()) {
+    if (typeof data.message !== "string" || !data.message.trim()) {
       statusElement.textContent = "لا توجد رسالة منشورة";
       return;
     }
 
-    messageElement.textContent = String(message).slice(0, 240);
+    messageElement.textContent = data.message.slice(0, 240);
     statusElement.textContent = "رسالة منشورة من المصمم";
-  };
 
-  // تحميل البيانات
-  const url =
-    "https://docs.google.com/spreadsheets/d/1q5THzJM4frfUiHffdvam1CGvcwGiXXaDX7micYwB43Q/gviz/tq?tqx=out:json;responseHandler:handleSheetData&sheet=Sheet1&range=A1&_=" +
-    Date.now();
-
-  messageScript = document.createElement("script");
-  messageScript.src = url;
-
-  messageScript.onerror = () => {
-    statusElement.textContent = "تعذر الاتصال بالرسائل";
-    messageScript?.remove();
-    messageScript = null;
-  };
-
-  document.body.appendChild(messageScript);
+  } catch (error) {
+    console.error("Message Error:", error);
+    statusElement.textContent = "تعذر تحديث الرسالة";
+  }
 }
 
-// تحميل الرسالة
+// تحميل الرسالة عند فتح الموقع
 loadMessage();
 
-// تحديث كل 20 ثانية
+// تحديث الرسالة كل 20 ثانية
 setInterval(loadMessage, 20000);
