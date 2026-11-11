@@ -118,48 +118,69 @@ render();
 // الرسالة العامة من Google Sheets
 // ===================================
 
-async function loadMessage() {
+let messageScript = null;
+
+function loadMessage() {
   const messageElement = $("publicMessage");
   const statusElement = $("messageStatus");
 
   if (!messageElement || !statusElement) return;
 
-  const url =
-    "https://docs.google.com/spreadsheets/d/1q5THzJM4frfUiHffdvam1CGvcwGiXXaDX7micYwB43Q/gviz/tq?tqx=out:csv&sheet=Sheet1&range=A1";
+  statusElement.textContent = "جاري تحديث الرسالة...";
 
-  try {
-    const response = await fetch(url + "&cache=" + Date.now());
+  // إزالة الطلب السابق
+  if (messageScript) {
+    messageScript.remove();
+  }
 
-    if (!response.ok) {
-      throw new Error("Google Sheets error: " + response.status);
+  // اسم دالة استقبال البيانات
+  window.handleSheetData = function(data) {
+    if (messageScript) {
+      messageScript.remove();
+      messageScript = null;
     }
 
-    const csv = await response.text();
-
-    let message = csv.trim();
-
-    // استخراج النص من CSV
-    if (message.startsWith('"') && message.endsWith('"')) {
-      message = message.slice(1, -1).replace(/""/g, '"');
+    if (
+      !data ||
+      data.status !== "ok" ||
+      !data.table ||
+      !data.table.rows ||
+      !data.table.rows.length
+    ) {
+      statusElement.textContent = "تعذر قراءة الرسالة";
+      return;
     }
 
-    message = message.trim();
+    const cell = data.table.rows[0].c?.[0];
+    const message = cell?.v ?? cell?.f ?? "";
 
-    if (!message) {
+    if (!String(message).trim()) {
       statusElement.textContent = "لا توجد رسالة منشورة";
       return;
     }
 
-    messageElement.textContent = message.slice(0, 240);
+    messageElement.textContent = String(message).slice(0, 240);
     statusElement.textContent = "رسالة منشورة من المصمم";
+  };
 
-  } catch (error) {
-    console.error("Google Sheets Error:", error);
-    statusElement.textContent = "تعذر تحديث الرسالة حاليًا";
-  }
+  // تحميل البيانات
+  const url =
+    "https://docs.google.com/spreadsheets/d/1q5THzJM4frfUiHffdvam1CGvcwGiXXaDX7micYwB43Q/gviz/tq?tqx=out:json;responseHandler:handleSheetData&sheet=Sheet1&range=A1&_=" +
+    Date.now();
+
+  messageScript = document.createElement("script");
+  messageScript.src = url;
+
+  messageScript.onerror = () => {
+    statusElement.textContent = "تعذر الاتصال بالرسائل";
+    messageScript?.remove();
+    messageScript = null;
+  };
+
+  document.body.appendChild(messageScript);
 }
 
-// تحميل الرسالة عند فتح الموقع
+// تحميل الرسالة
 loadMessage();
 
 // تحديث كل 20 ثانية
