@@ -516,3 +516,51 @@ footer a {
   color: #a2afa5;
   font-size: 11px;
 }
+
+/* تصميم صندوق الرسالة فقط */
+.message {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(35, 51, 40, 0.95),
+    rgba(15, 25, 19, 0.98)
+  );
+  border: 1px solid rgba(216, 184, 117, 0.45);
+  border-radius: 22px;
+  padding: 25px;
+  margin: 20px 0;
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(216, 184, 117, 0.04);
+}
+
+.message::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 15px;
+  bottom: 15px;
+  width: 4px;
+  border-radius: 10px;
+  background: linear-gradient(#f0d9a4, #b38e4f);
+  box-shadow: 0 0 12px #d8b87566;
+}
+
+.message b {
+  display: block;
+  color: #f0d9a4;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.message p {
+  color: #f4f0e6;
+  line-height: 2;
+  margin: 0 0 12px;
+}
+
+.message small {
+  color: #a2afa5;
+  font-size: 11px;
+}
