@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101713"><meta name="description" content="سبحة إلكترونية لذكر الله والصلاة على النبي ﷺ">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self'; img-src 'self' data:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<title>سبحتي | سبحة إلكترونية</title><link rel="stylesheet" href="style.css"><script type="module" src="app.js"></script></head>
+<body><header class="topbar"><a class="brand" href="index.html">۞ سُبْحَتِي</a><span>وَاذْكُرُوا اللَّهَ كَثِيرًا</span></header>
+<main class="page"><section class="intro"><small>✦ مساحة هادئة للذِّكر ✦</small><h1>اجعل لسانك<br><em>رطبًا بذكر الله</em></h1><p>لحظات بسيطة من الذكر… وطمأنينة أكبر للقلب.</p></section>
+<section class="message"><b>📢 رسالة من المصمم محمد</b><p id="publicMessage">أهلاً بك في سبحتي الإلكترونية، لا تنسَ الصلاة على النبي محمد ﷺ.</p><small id="messageStatus">رسالة ترحيبية</small></section>
+<section class="card"><div class="current">الذِّكر الحالي <strong id="currentDhikr">سبحان الله</strong></div><div class="ring"><div><small>عدد التسبيحات</small><output id="count">0</output><small>تقبّل الله ذكرك</small></div></div>
+<div class="progress"><span id="progressText">0 / 33</span><div><i id="progressFill"></i></div></div><button id="tasbeehButton" class="mainbtn">✦ سَبِّح</button>
+<div class="controls"><button id="resetButton">↺ تصفير العداد</button><label>الهدف <select id="goalSelect"><option>33</option><option>99</option><option>100</option><option>1000</option></select></label></div></section>
+<section class="dhikr"><h3>اختر الذكر</h3><div id="dhikrGrid"><button class="active" data-dhikr="سبحان الله">سُبْحَانَ الله</button><button data-dhikr="الحمد لله">الْحَمْدُ لِلَّه</button><button data-dhikr="الله أكبر">اللهُ أَكْبَر</button><button data-dhikr="أستغفر الله">أَسْتَغْفِرُ الله</button><button class="wide" data-dhikr="لا إله إلا الله">لَا إِلَهَ إِلَّا الله</button></div></section>
+<section class="salawat">اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّد<br><b>صَلِّ عَلَى مُحَمَّد ﷺ</b></section></main>
+<footer><span>تصميم وبرمجة <b>محمد</b></span><a href="admin.html">لوحة المصمم</a><span>© <span id="year"></span> سبحتي</span></footer><div id="toast" role="status"></div></body></html>
