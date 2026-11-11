@@ -1,83 +1,165 @@
 
 const $ = id => document.getElementById(id);
+
 const key = "sob7aty-state-v1";
 
-let count = 0, goal = 33, dhikr = "سبحان الله", timer;
+let count = 0;
+let goal = 33;
+let dhikr = "سبحان الله";
+let timer;
 
+// استرجاع بيانات السبحة
 try {
   const s = JSON.parse(localStorage.getItem(key) || "null");
-  if (s && Number.isSafeInteger(s.count) && s.count >= 0 && s.count <= 1e7) count = s.count;
-  if (s && [33, 99, 100, 1000].includes(s.goal)) goal = s.goal;
-  if (s && ["سبحان الله", "الحمد لله", "الله أكبر", "أستغفر الله", "لا إله إلا الله"].includes(s.dhikr)) dhikr = s.dhikr;
+
+  if (s && Number.isSafeInteger(s.count) && s.count >= 0 && s.count <= 1e7) {
+    count = s.count;
+  }
+
+  if (s && [33, 99, 100, 1000].includes(s.goal)) {
+    goal = s.goal;
+  }
+
+  if (
+    s &&
+    ["سبحان الله", "الحمد لله", "الله أكبر", "أستغفر الله", "لا إله إلا الله"].includes(s.dhikr)
+  ) {
+    dhikr = s.dhikr;
+  }
 } catch {}
 
+// حفظ البيانات
 function save() {
-  try { localStorage.setItem(key, JSON.stringify({count, goal, dhikr})); } catch {}
+  try {
+    localStorage.setItem(key, JSON.stringify({
+      count,
+      goal,
+      dhikr
+    }));
+  } catch {}
 }
 
+// تحديث شكل السبحة
 function render() {
   $("count").textContent = count;
   $("currentDhikr").textContent = dhikr;
   $("goalSelect").value = goal;
   $("progressText").textContent = `${count} / ${goal}`;
-  $("progressFill").style.width = Math.min(100, count / goal * 100) + "%";
-  document.querySelectorAll("[data-dhikr]").forEach(b =>
-    b.classList.toggle("active", b.dataset.dhikr === dhikr)
-  );
+
+  $("progressFill").style.width =
+    Math.min(100, (count / goal) * 100) + "%";
+
+  document.querySelectorAll("[data-dhikr]").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.dhikr === dhikr
+    );
+  });
 }
 
-function toast(t) {
-  $("toast").textContent = t;
+// رسالة صغيرة
+function toast(message) {
+  $("toast").textContent = message;
   $("toast").classList.add("show");
+
   clearTimeout(timer);
-  timer = setTimeout(() => $("toast").classList.remove("show"), 1600);
+
+  timer = setTimeout(() => {
+    $("toast").classList.remove("show");
+  }, 1600);
 }
 
+// زر التسبيح
 $("tasbeehButton").onclick = () => {
   if (count < 1e7) count++;
-  render(); save();
-  if (count === goal) toast("ما شاء الله! وصلت لهدفك 🌿");
-};
 
-$("resetButton").onclick = () => {
-  if (confirm("هل تريد تصفير العداد؟")) {
-    count = 0; render(); save(); toast("تم تصفير العداد");
+  render();
+  save();
+
+  if (count === goal) {
+    toast("ما شاء الله! وصلت لهدفك 🌿");
   }
 };
 
+// تصفير العداد
+$("resetButton").onclick = () => {
+  if (confirm("هل تريد تصفير العداد؟")) {
+    count = 0;
+    render();
+    save();
+    toast("تم تصفير العداد");
+  }
+};
+
+// اختيار الهدف
 $("goalSelect").onchange = () => {
-  goal = Number($("goalSelect").value); render(); save();
+  goal = Number($("goalSelect").value);
+  render();
+  save();
 };
 
-$("dhikrGrid").onclick = e => {
-  const b = e.target.closest("[data-dhikr]");
-  if (b) { dhikr = b.dataset.dhikr; render(); save(); }
+// اختيار الذكر
+$("dhikrGrid").onclick = event => {
+  const button = event.target.closest("[data-dhikr]");
+
+  if (button) {
+    dhikr = button.dataset.dhikr;
+    render();
+    save();
+  }
 };
 
+// السنة الحالية
 $("year").textContent = new Date().getFullYear();
+
 render();
 
-// قراءة الرسالة المنشورة من Google Sheets
+// ==================================
+// الرسالة العامة من Google Sheets
+// ==================================
+
 async function loadMessage() {
+  const messageElement = $("publicMessage");
+  const statusElement = $("messageStatus");
+
   try {
-    const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0qjDOq-MWb0VGBZTwnS9L-9d6TjYheZlQpIhASKy2HtkKZ9jbXBzbsmNHxx-7znOqJ2nb2yi9z7TK/pub?output=csv";
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("تعذر تحميل الجدول");
+    const url =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0qjDOq-MWb0VGBZTwnS9L-9d6TjYheZlQpIhASKy2HtkKZ9jbXBzbsmNHxx-7znOqJ2nb2yi9z7TK/pub?output=csv";
+
+    const response = await fetch(url + "&t=" + Date.now());
+
+    if (!response.ok) {
+      throw new Error("فشل تحميل الرسالة");
+    }
 
     const csv = await response.text();
-    const rows = csv.trim().split(/\r?\n/);
-    const lastRow = rows[rows.length - 1];
 
-    const message = lastRow.replace(/^"|"$/g, "").replace(/""/g, '"').trim();
+    // قراءة أول خلية A1
+    const firstLine = csv.split(/\r?\n/)[0] || "";
+
+    let message = firstLine.trim();
+
+    // إزالة علامات CSV
+    if (message.startsWith('"') && message.endsWith('"')) {
+      message = message.slice(1, -1).replace(/""/g, '"');
+    }
+
+    message = message.trim();
 
     if (message) {
-      $("publicMessage").textContent = message.slice(0, 240);
-      $("messageStatus").textContent = "رسالة منشورة من المصمم";
+      messageElement.textContent = message.slice(0, 240);
+      statusElement.textContent = "رسالة منشورة من المصمم";
+    } else {
+      statusElement.textContent = "لا توجد رسالة جديدة";
     }
-  } catch {
-    $("messageStatus").textContent = "تعذر تحديث الرسالة حاليًا";
+
+  } catch (error) {
+    statusElement.textContent = "تعذر تحديث الرسالة حاليًا";
   }
 }
 
+// تحميل الرسالة عند فتح الموقع
 loadMessage();
+
+// تحديث الرسالة كل دقيقة
 setInterval(loadMessage, 60000);
