@@ -20,10 +20,7 @@ try {
     goal = s.goal;
   }
 
-  if (
-    s &&
-    ["سبحان الله", "الحمد لله", "الله أكبر", "أستغفر الله", "لا إله إلا الله"].includes(s.dhikr)
-  ) {
+  if (s && ["سبحان الله", "الحمد لله", "الله أكبر", "أستغفر الله", "لا إله إلا الله"].includes(s.dhikr)) {
     dhikr = s.dhikr;
   }
 } catch {}
@@ -39,7 +36,7 @@ function save() {
   } catch {}
 }
 
-// تحديث شكل السبحة
+// تحديث الواجهة
 function render() {
   $("count").textContent = count;
   $("currentDhikr").textContent = dhikr;
@@ -57,7 +54,7 @@ function render() {
   });
 }
 
-// رسالة صغيرة
+// الإشعارات
 function toast(message) {
   $("toast").textContent = message;
   $("toast").classList.add("show");
@@ -114,19 +111,21 @@ $("year").textContent = new Date().getFullYear();
 
 render();
 
-// ==================================
+// =================================
 // الرسالة العامة من Google Sheets
-// ==================================
+// =================================
 
 async function loadMessage() {
   const messageElement = $("publicMessage");
   const statusElement = $("messageStatus");
 
-  try {
-    const url =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0qjDOq-MWb0VGBZTwnS9L-9d6TjYheZlQpIhASKy2HtkKZ9jbXBzbsmNHxx-7znOqJ2nb2yi9z7TK/pub?output=csv";
+  if (!messageElement || !statusElement) return;
 
-    const response = await fetch(url + "&t=" + Date.now());
+  const url =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0qjDOq-MWb0VGBZTwnS9L-9d6TjYheZlQpIhASKy2HtkKZ9jbXBzbsmNHxx-7znOqJ2nb2yi9z7TK/pub?gid=0&single=true&output=csv";
+
+  try {
+    const response = await fetch(url + "&cache=" + Date.now());
 
     if (!response.ok) {
       throw new Error("فشل تحميل الرسالة");
@@ -139,7 +138,7 @@ async function loadMessage() {
 
     let message = firstLine.trim();
 
-    // إزالة علامات CSV
+    // معالجة تنسيق CSV
     if (message.startsWith('"') && message.endsWith('"')) {
       message = message.slice(1, -1).replace(/""/g, '"');
     }
@@ -150,10 +149,11 @@ async function loadMessage() {
       messageElement.textContent = message.slice(0, 240);
       statusElement.textContent = "رسالة منشورة من المصمم";
     } else {
-      statusElement.textContent = "لا توجد رسالة جديدة";
+      statusElement.textContent = "لا توجد رسالة منشورة";
     }
 
   } catch (error) {
+    console.error("Message error:", error);
     statusElement.textContent = "تعذر تحديث الرسالة حاليًا";
   }
 }
@@ -161,5 +161,5 @@ async function loadMessage() {
 // تحميل الرسالة عند فتح الموقع
 loadMessage();
 
-// تحديث الرسالة كل دقيقة
-setInterval(loadMessage, 60000);
+// تحديث الرسالة كل 20 ثانية
+setInterval(loadMessage, 20000);
