@@ -122,7 +122,7 @@ async function loadMessage() {
   if (!messageElement || !statusElement) return;
 
   const url =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0qjDOq-MWb0VGBZTwnS9L-9d6TjYheZlQpIhASKy2HtkKZ9jbXBzbsmNHxx-7znOqJ2nb2yi9z7TK/pub?gid=0&single=true&output=csv";
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0qjDOq-MWb0VGBZTwnS9L-9d6TjYheZlQpIhASKy2HtkKZ9jbXBzbsmNHxx-7znOqJ2nb2yi9z7TK/pub?output=csv";
 
   try {
     const response = await fetch(url + "&cache=" + Date.now());
@@ -161,5 +161,5 @@ async function loadMessage() {
 // تحميل الرسالة عند فتح الموقع
 loadMessage();
 
-// تحديث الرسالة كل 20 ثانية
+// تحديث كل 20 ثانية
 setInterval(loadMessage, 20000);
