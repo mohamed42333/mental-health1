@@ -20,7 +20,10 @@ try {
     goal = s.goal;
   }
 
-  if (s && ["سبحان الله", "الحمد لله", "الله أكبر", "أستغفر الله", "لا إله إلا الله"].includes(s.dhikr)) {
+  if (
+    s &&
+    ["سبحان الله", "الحمد لله", "الله أكبر", "أستغفر الله", "لا إله إلا الله"].includes(s.dhikr)
+  ) {
     dhikr = s.dhikr;
   }
 } catch {}
@@ -111,9 +114,9 @@ $("year").textContent = new Date().getFullYear();
 
 render();
 
-// =================================
+// ===================================
 // الرسالة العامة من Google Sheets
-// =================================
+// ===================================
 
 async function loadMessage() {
   const messageElement = $("publicMessage");
@@ -122,38 +125,36 @@ async function loadMessage() {
   if (!messageElement || !statusElement) return;
 
   const url =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0qjDOq-MWb0VGBZTwnS9L-9d6TjYheZlQpIhASKy2HtkKZ9jbXBzbsmNHxx-7znOqJ2nb2yi9z7TK/pub?output=csv";
+    "https://docs.google.com/spreadsheets/d/1q5THzJM4frfUiHffdvam1CGvcwGiXXaDX7micYwB43Q/gviz/tq?tqx=out:csv&sheet=Sheet1&range=A1";
 
   try {
     const response = await fetch(url + "&cache=" + Date.now());
 
     if (!response.ok) {
-      throw new Error("فشل تحميل الرسالة");
+      throw new Error("Google Sheets error: " + response.status);
     }
 
     const csv = await response.text();
 
-    // قراءة أول خلية A1
-    const firstLine = csv.split(/\r?\n/)[0] || "";
+    let message = csv.trim();
 
-    let message = firstLine.trim();
-
-    // معالجة تنسيق CSV
+    // استخراج النص من CSV
     if (message.startsWith('"') && message.endsWith('"')) {
       message = message.slice(1, -1).replace(/""/g, '"');
     }
 
     message = message.trim();
 
-    if (message) {
-      messageElement.textContent = message.slice(0, 240);
-      statusElement.textContent = "رسالة منشورة من المصمم";
-    } else {
+    if (!message) {
       statusElement.textContent = "لا توجد رسالة منشورة";
+      return;
     }
 
+    messageElement.textContent = message.slice(0, 240);
+    statusElement.textContent = "رسالة منشورة من المصمم";
+
   } catch (error) {
-    console.error("Message error:", error);
+    console.error("Google Sheets Error:", error);
     statusElement.textContent = "تعذر تحديث الرسالة حاليًا";
   }
 }
