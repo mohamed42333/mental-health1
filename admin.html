@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تواصل معنا - سُبْحَتِي</title>
 
-  <!-- مكتبة تحديد الدولة -->
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
 
@@ -18,30 +17,28 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #062f35, #087e83);
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #062f35, #087e83);
       color: white;
     }
 
     .container {
       width: 100%;
       max-width: 480px;
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
       padding: 30px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
       box-shadow: 0 10px 35px rgba(0,0,0,0.25);
-      backdrop-filter: blur(12px);
     }
 
     h1 {
       text-align: center;
       margin-top: 0;
-      margin-bottom: 10px;
     }
 
     .description {
@@ -52,7 +49,7 @@
 
     label {
       display: block;
-      margin: 15px 0 8px;
+      margin: 16px 0 8px;
     }
 
     input, textarea {
@@ -82,8 +79,8 @@
     }
 
     .iti input {
-      padding-left: 90px;
       text-align: left;
+      padding-left: 90px;
     }
 
     .iti__country-list {
@@ -91,7 +88,7 @@
       direction: ltr;
     }
 
-    .country-result {
+    #countryResult {
       margin-top: 10px;
       color: #d5eeee;
       font-size: 14px;
@@ -101,17 +98,17 @@
       display: block;
       width: 100%;
       padding: 14px;
+      margin-top: 18px;
       border: none;
       border-radius: 10px;
       text-align: center;
+      text-decoration: none;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      text-decoration: none;
     }
 
     button {
-      margin-top: 20px;
       background: #20c997;
       color: #063b38;
     }
@@ -122,8 +119,7 @@
     }
 
     .home-btn {
-      margin-top: 12px;
-      background: #ffffff;
+      background: white;
       color: #07575b;
     }
 
@@ -131,10 +127,10 @@
       background: #d9eeee;
     }
 
-    .message {
-      margin-top: 15px;
+    #statusMessage {
       text-align: center;
-      font-size: 14px;
+      margin-top: 12px;
+      color: #d5eeee;
     }
   </style>
 </head>
@@ -142,8 +138,12 @@
 <body>
 
   <main class="container">
+
     <h1>تواصل معنا</h1>
-    <p class="description">يسعدنا استقبال رسالتك عبر موقع سُبْحَتِي</p>
+
+    <p class="description">
+      يسعدنا استقبال رسالتك عبر موقع سُبْحَتِي
+    </p>
 
     <form id="contactForm">
 
@@ -165,8 +165,8 @@
         required
       >
 
-      <div class="country-result" id="countryResult">
-        الدولة: لم يتم تحديدها بعد
+      <div id="countryResult">
+        الدولة: مصر
       </div>
 
       <label for="note">الرسالة أو الملاحظة</label>
@@ -176,57 +176,75 @@
         placeholder="اكتب رسالتك هنا"
       ></textarea>
 
-      <button type="submit" id="submitBtn">إرسال</button>
+      <button type="submit" id="submitBtn">
+        إرسال
+      </button>
 
-      <div class="message" id="statusMessage"></div>
+      <div id="statusMessage"></div>
 
     </form>
 
     <a href="index.html" class="home-btn">
       العودة للصفحة الرئيسية
     </a>
+
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
 
   <script>
-    const phoneInput = document.querySelector("#phone");
-    const countryResult = document.querySelector("#countryResult");
+    const phoneInput = document.getElementById("phone");
+    const countryResult = document.getElementById("countryResult");
+    const contactForm = document.getElementById("contactForm");
 
     const iti = window.intlTelInput(phoneInput, {
       initialCountry: "eg",
       separateDialCode: true,
       nationalMode: true,
       preferredCountries: ["eg", "sa", "ae", "us", "gb"],
-      countrySearch: true
+      countrySearch: true,
+
+      loadUtils: () =>
+        import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js")
     });
 
     function updateCountry() {
       const country = iti.getSelectedCountryData();
 
-      countryResult.textContent = country.name
-        ? "الدولة: " + country.name + " | كود الدولة: +" + country.dialCode
-        : "الدولة: غير محددة";
+      countryResult.textContent =
+        "الدولة: " + country.name +
+        " | كود الدولة: +" + country.dialCode;
     }
 
     phoneInput.addEventListener("countrychange", updateCountry);
-    phoneInput.addEventListener("input", updateCountry);
 
     updateCountry();
 
-    // تجهيز النموذج وإرساله إلى contact.js
-    document.querySelector("#contactForm")
-      .addEventListener("submit", function(event) {
-        if (!iti.isValidNumber()) {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          document.querySelector("#statusMessage").textContent =
-            "من فضلك أدخل رقم هاتف صحيحًا.";
-          return;
-        }
+    // تجهيز الرقم قبل أن يستلمه contact.js
+    contactForm.addEventListener("submit", function() {
 
-        phoneInput.value = iti.getNumber();
-      }, true);
+      const country = iti.getSelectedCountryData();
+      const digits = phoneInput.value.replace(/\D/g, "");
+
+      if (!digits) return;
+
+      let internationalNumber = "";
+
+      try {
+        internationalNumber = iti.getNumber();
+      } catch (error) {
+        internationalNumber = "";
+      }
+
+      // طريقة احتياطية إذا لم تحمل أدوات المكتبة
+      if (!internationalNumber) {
+        const nationalNumber = digits.replace(/^0+/, "");
+        internationalNumber = "+" + country.dialCode + nationalNumber;
+      }
+
+      phoneInput.value = internationalNumber;
+
+    }, true);
   </script>
 
   <script src="contact.js"></script>
