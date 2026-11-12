@@ -1,0 +1,13 @@
+{
+  "name": "mohamed-contact",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "dotenv": "^16.4.7"
+  }
+}
