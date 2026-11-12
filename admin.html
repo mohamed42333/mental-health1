@@ -4,116 +4,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تواصل معنا | سُبْحَتِي</title>
+  <title>تواصل معنا - سُبْحَتِي</title>
+
+  <!-- مكتبة تحديد الدولة -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
 
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
-      font-family: Tahoma, Arial, sans-serif;
     }
 
     body {
+      margin: 0;
       min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #062f35, #087e83);
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
-      background: linear-gradient(135deg, #071c26, #064e50, #087f75);
       color: white;
     }
 
     .container {
       width: 100%;
-      max-width: 500px;
-      padding: 35px;
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 24px;
-      backdrop-filter: blur(15px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-    }
-
-    .logo {
-      text-align: center;
-      font-size: 38px;
-      margin-bottom: 12px;
+      max-width: 480px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+      backdrop-filter: blur(12px);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 12px;
-      font-size: 28px;
+      margin-top: 0;
+      margin-bottom: 10px;
     }
 
     .description {
       text-align: center;
-      color: #c5e5df;
-      margin-bottom: 30px;
-      line-height: 1.8;
+      color: #d5eeee;
+      margin-bottom: 25px;
     }
 
     label {
       display: block;
-      margin-bottom: 9px;
-      font-weight: bold;
+      margin: 15px 0 8px;
     }
 
     input, textarea {
       width: 100%;
-      padding: 15px;
-      margin-bottom: 22px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 12px;
-      background: rgba(0,0,0,0.2);
+      padding: 13px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.12);
       color: white;
-      font-size: 15px;
+      font-size: 16px;
       outline: none;
     }
 
-    input:focus, textarea:focus {
-      border-color: #53e0c0;
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: #b7cfca;
+    input::placeholder,
+    textarea::placeholder {
+      color: #d5eeee;
     }
 
     textarea {
-      min-height: 120px;
+      min-height: 110px;
       resize: vertical;
     }
 
-    button {
+    .iti {
       width: 100%;
-      padding: 16px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #20b99a, #42dfb9);
-      color: #062c2a;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
+      direction: ltr;
     }
 
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(32,185,154,0.3);
+    .iti input {
+      padding-left: 90px;
+      text-align: left;
+    }
+
+    .iti__country-list {
+      color: #222;
+      direction: ltr;
+    }
+
+    .country-result {
+      margin-top: 10px;
+      color: #d5eeee;
+      font-size: 14px;
+    }
+
+    button, .home-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    button {
+      margin-top: 20px;
+      background: #20c997;
+      color: #063b38;
     }
 
     button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
-      transform: none;
     }
 
-    footer {
+    .home-btn {
+      margin-top: 12px;
+      background: #ffffff;
+      color: #07575b;
+    }
+
+    .home-btn:hover {
+      background: #d9eeee;
+    }
+
+    .message {
+      margin-top: 15px;
       text-align: center;
-      margin-top: 25px;
-      color: #c5e5df;
-      font-size: 13px;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -121,26 +142,18 @@
 <body>
 
   <main class="container">
-
-    <div class="logo">📿</div>
-
     <h1>تواصل معنا</h1>
-
-    <p class="description">
-      أهلاً بك في سُبْحَتِي<br>
-      يسعدنا استقبال رسالتك والرد عليك.
-    </p>
+    <p class="description">يسعدنا استقبال رسالتك عبر موقع سُبْحَتِي</p>
 
     <form id="contactForm">
 
-      <label for="name">الاسم بالكامل</label>
+      <label for="name">الاسم</label>
       <input
         type="text"
         id="name"
         name="name"
         placeholder="اكتب اسمك"
         required
-        maxlength="100"
       >
 
       <label for="phone">رقم الهاتف</label>
@@ -148,28 +161,73 @@
         type="tel"
         id="phone"
         name="phone"
-        placeholder="اكتب رقم هاتفك"
+        placeholder="رقم الهاتف"
         required
-        maxlength="20"
       >
 
-      <label for="note">الملاحظة</label>
+      <div class="country-result" id="countryResult">
+        الدولة: لم يتم تحديدها بعد
+      </div>
+
+      <label for="note">الرسالة أو الملاحظة</label>
       <textarea
         id="note"
         name="note"
-        placeholder="اكتب رسالتك هنا..."
-        maxlength="1000"
+        placeholder="اكتب رسالتك هنا"
       ></textarea>
 
-      <button type="submit">إرسال الرسالة</button>
+      <button type="submit" id="submitBtn">إرسال</button>
+
+      <div class="message" id="statusMessage"></div>
 
     </form>
 
-    <footer>
-      جميع الحقوق محفوظة © سُبْحَتِي
-    </footer>
-
+    <a href="index.html" class="home-btn">
+      العودة للصفحة الرئيسية
+    </a>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+
+  <script>
+    const phoneInput = document.querySelector("#phone");
+    const countryResult = document.querySelector("#countryResult");
+
+    const iti = window.intlTelInput(phoneInput, {
+      initialCountry: "eg",
+      separateDialCode: true,
+      nationalMode: true,
+      preferredCountries: ["eg", "sa", "ae", "us", "gb"],
+      countrySearch: true
+    });
+
+    function updateCountry() {
+      const country = iti.getSelectedCountryData();
+
+      countryResult.textContent = country.name
+        ? "الدولة: " + country.name + " | كود الدولة: +" + country.dialCode
+        : "الدولة: غير محددة";
+    }
+
+    phoneInput.addEventListener("countrychange", updateCountry);
+    phoneInput.addEventListener("input", updateCountry);
+
+    updateCountry();
+
+    // تجهيز النموذج وإرساله إلى contact.js
+    document.querySelector("#contactForm")
+      .addEventListener("submit", function(event) {
+        if (!iti.isValidNumber()) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          document.querySelector("#statusMessage").textContent =
+            "من فضلك أدخل رقم هاتف صحيحًا.";
+          return;
+        }
+
+        phoneInput.value = iti.getNumber();
+      }, true);
+  </script>
 
   <script src="contact.js"></script>
 
