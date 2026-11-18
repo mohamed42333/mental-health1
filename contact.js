@@ -12,13 +12,20 @@ if (form) {
     const note = form.querySelector('[name="note"]').value.trim();
 
     const imageInput = document.getElementById("myFile");
-const image = imageInput ? imageInput.files[0] : null;
-
-
-    
+    const image = imageInput ? imageInput.files[0] : null;
 
     if (!name || !phone) {
       alert("من فضلك اكتب الاسم ورقم الهاتف");
+      return;
+    }
+
+    if (image && !image.type.startsWith("image/")) {
+      alert("من فضلك اختر صورة صحيحة");
+      return;
+    }
+
+    if (image && image.size > 5 * 1024 * 1024) {
+      alert("حجم الصورة يجب ألا يتجاوز 5 ميجابايت");
       return;
     }
 
@@ -29,19 +36,26 @@ const image = imageInput ? imageInput.files[0] : null;
       submitButton.textContent = "جاري الإرسال...";
     }
 
-   const data = new URLSearchParams({
-  name: name,
-  phone: phone,
-  note: note,
-  imageData: image ? await new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.readAsDataURL(image);
-  }) : "",
-  imageName: image ? image.name : ""
-});
-
     try {
+      let imageData = "";
+
+      if (image) {
+        imageData = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(image);
+        });
+      }
+
+      const data = new URLSearchParams({
+        name: name,
+        phone: phone,
+        note: note,
+        imageData: imageData,
+        imageName: image ? image.name : ""
+      });
+
       await fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
@@ -50,6 +64,18 @@ const image = imageInput ? imageInput.files[0] : null;
 
       alert("تم إرسال طلبك بنجاح، شكرًا لتواصلك معنا!");
       form.reset();
+
+      const preview = document.getElementById("previewImage");
+      const fileName = document.getElementById("fileName");
+
+      if (preview) {
+        preview.src = "";
+        preview.style.display = "none";
+      }
+
+      if (fileName) {
+        fileName.textContent = "";
+      }
 
     } catch (error) {
       alert("حدث خطأ أثناء الإرسال، حاول مرة أخرى.");
