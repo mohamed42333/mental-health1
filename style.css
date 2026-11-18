@@ -112,7 +112,7 @@ h1 em {
 }
 
 .message::after {
-  content: "✦";
+  content: "♡";
   position: absolute;
   left: 18px;
   top: 10px;
