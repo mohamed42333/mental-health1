@@ -176,6 +176,80 @@
         placeholder="اكتب رسالتك هنا"
       ></textarea>
 
+<label for="myFile">📷 لو عندك صورة ابعتها</label>
+
+<div class="upload-box">
+  <input type="file" id="myFile" accept="image/*">
+  <img id="previewImage" alt="معاينة الصورة">
+  <p id="fileName"></p>
+</div>
+
+<style>
+.upload-box {
+  width: 100%;
+  padding: 20px;
+  margin-top: 8px;
+  text-align: center;
+  border: 2px dashed rgba(255,255,255,0.4);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+}
+
+.upload-box input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+#previewImage {
+  display: none;
+  max-width: 100%;
+  max-height: 200px;
+  margin: 15px auto 0;
+  border-radius: 12px;
+  border: 2px solid #20c997;
+}
+
+#fileName {
+  font-size: 13px;
+  color: #d5eeee;
+  overflow-wrap: anywhere;
+}
+</style>
+
+<script>
+const myFile = document.getElementById("myFile");
+const previewImage = document.getElementById("previewImage");
+const fileName = document.getElementById("fileName");
+
+myFile.addEventListener("change", function() {
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("من فضلك اختر صورة");
+    this.value = "";
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert("حجم الصورة يجب ألا يتجاوز 5 ميجابايت");
+    this.value = "";
+    return;
+  }
+
+  previewImage.src = URL.createObjectURL(file);
+  previewImage.style.display = "block";
+  fileName.textContent = "الصورة المختارة: " + file.name;
+});
+</script>
+
+
+
+
+      
       <button type="submit" id="submitBtn">
         إرسال
       </button>
