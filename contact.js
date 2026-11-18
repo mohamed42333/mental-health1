@@ -11,6 +11,12 @@ if (form) {
     const phone = form.querySelector('[name="phone"]').value.trim();
     const note = form.querySelector('[name="note"]').value.trim();
 
+    const imageInput = document.getElementById("myFile");
+const image = imageInput ? imageInput.files[0] : null;
+
+
+    
+
     if (!name || !phone) {
       alert("من فضلك اكتب الاسم ورقم الهاتف");
       return;
@@ -23,11 +29,17 @@ if (form) {
       submitButton.textContent = "جاري الإرسال...";
     }
 
-    const data = new URLSearchParams({
-      name: name,
-      phone: phone,
-      note: note
-    });
+   const data = new URLSearchParams({
+  name: name,
+  phone: phone,
+  note: note,
+  imageData: image ? await new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(image);
+  }) : "",
+  imageName: image ? image.name : ""
+});
 
     try {
       await fetch(SCRIPT_URL, {
