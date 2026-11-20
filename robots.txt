@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mohamed42333.github.io/mental-health1/sitemap.xml
